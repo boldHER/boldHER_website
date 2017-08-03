@@ -1,0 +1,188 @@
+<html>
+<head>
+
+<script src="tabletop1.3.4.js"></script>
+<script type="text/javascript" src="maphover.js"></script>
+
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .marker {
+          background-image: url('mapbox-icon.png');
+          background-size: cover;
+          width: 20px;
+          height: 20px;
+          border-radius: 30%;
+          cursor: pointer;
+        }
+        .mapboxgl-popup {
+          max-width: 250px;
+        }
+
+        .mapboxgl-popup-content {
+          text-align: center;
+          font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [-96, 37.8],
+    zoom: 3
+});
+
+
+
+var geojson = {
+  type: 'FeatureCollection',
+  features: [{
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-86.80249, 33.5206608]
+    },
+    properties: {
+      title: 'Pathways (Birmingham, Alabama)',
+      description: 'Provides housing and supportive services for 1,200-1,500 women and children annually.'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-149.9002778, 61.2180556]
+    },
+    properties: {
+      title: "Alaska Native Science & Engineering Program (Anchorage, Alaska)",
+      description: '"ANSEP’s objective is to effect systemic change in the hiring patterns of Alaska Natives in science and engineering by placing our students on a career path to leadership. "'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-112.0740373, 33.4483771]
+    },
+    properties: {
+      title: 'Fresh Start Women (Pheonix, Arizona)',
+      description: '“...provides women with education, resources and support to positively transform their lives.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-112.1740373, 33.4483771]
+    },
+    properties: {
+      title: 'Arizona Women’s Education and Employment, Inc. (Pheonix, Arizona)',
+      description: '“...providing specialized programs that give resources...from skills trainings to career mentoring...”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-92.2895948, 34.7464809]
+    },
+    properties: {
+      title: 'Women Lead Arkansas (Little Rock, Arkansas)',
+      description: '“...empower[s] women and girls to engage in politics, policy and leadership..[by]... providing tools and resources for women will increase opportunities for economic development...”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-118.2436849, 34.0522342]
+    },
+    properties: {
+      title: 'EmpowHer Institute (Los Angeles, California)',
+      description: '“...empower[s] young women by providing them the skills necessary through education...enabl[ing] them to become confident, college and career ready.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (Denver, Colorado)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  }]
+};
+
+// add markers to map
+geojson.features.forEach(function(marker) {
+
+  // create a HTML element for each feature
+  var el = document.createElement('div');
+  el.className = 'marker';
+
+  // make a marker for each feature and add to the map
+  new mapboxgl.Marker(el, { offset: [-50 / 2, -50 / 2] })
+  .setLngLat(marker.geometry.coordinates)
+  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+  .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+  .addTo(map);
+});
+
+// $('#map').on('click', '.trigger', function() {
+//     alert('Hello from Toronto!');
+// });
+
+</script>
+
+</body>
+</html>
