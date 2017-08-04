@@ -1,30 +1,34 @@
-
 var totalPlaces = [];
-var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA'
+var rowInfo =[];
+var sheetURL = '12HhZTtSDJraLlG8hIfrJkEs8a-x36BgF1D0uL_3LUzI'
 
 Tabletop.init( {key: sheetURL, callback: convertToGeoJSON, simpleSheet: true } );
 
 function convertToGeoJSON(data) {
     for (var i = 0; i < data.length; i++){
         console.log("test");
-        var rowInfo = [];
+        rowInfo = [];
         rowInfo.push(data[i]["state"]);
         rowInfo.push(data[i]["city"]);
         rowInfo.push(data[i]["homepage"]);
         rowInfo.push(data[i]["donation"]);
         rowInfo.push(data[i]["organization"]);
         rowInfo.push(data[i]["description"]);
+        rowInfo.push(data[i]["lat"]);
+        rowInfo.push(data[i]["lng"]);
         totalPlaces.push(rowInfo);
-        
     }
-    console.log(totalPlaces);
+    test();
+};
+
+function test(){
+  initMap();
 }
 
 
-// // console.log(totalPlaces);
-L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
-  var map = L.mapbox.map('map', 'mapbox.streets')
-    .setView([37.8, -96], 4);
+function initMap(){
+  L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
+  var map = L.mapbox.map('map', 'mapbox.streets').setView([37.8, -96], 4);
 
   var popup = new L.Popup({ autoPan: false });
 
@@ -33,6 +37,45 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
       style: getStyle,
       onEachFeature: onEachFeature
   }).addTo(map);
+
+
+
+// var geojson = [
+//   {
+//     type: 'Feature',
+//     geometry: {
+//       type: 'Point',
+//       coordinates: [-122, 33]
+//     }
+//   },
+//   {
+//     type: 'Feature',
+//     geometry: {
+//       type: 'Point',
+//       coordinates: [-122.413682, 37.775408]
+//     }
+//   }
+// ];
+
+// var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
+// mapGeo.scrollWheelZoom.disable();
+
+
+for (var index = 0; index < totalPlaces.length; index++){
+  var geojson = [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
+      }
+    },
+  ];
+  var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
+  mapGeo.scrollWheelZoom.disable();
+} 
+
+
 
   function getStyle(feature) {
       return {
@@ -116,9 +159,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
   function zoomToFeature(e) {
       map.fitBounds(e.target.getBounds());
   }
-
-  //map.legendControl.addLegend(getLegendHTML());
-
+// add markers to map
 
 
 
@@ -134,6 +175,9 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
 
 
 
+
+}
+// // console.log(totalPlaces);
 
 
 
