@@ -1,6 +1,6 @@
 var totalPlaces = [];
 var rowInfo =[];
-var sheetURL = '12HhZTtSDJraLlG8hIfrJkEs8a-x36BgF1D0uL_3LUzI'
+var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA'
 
 Tabletop.init( {key: sheetURL, callback: convertToGeoJSON, simpleSheet: true } );
 
