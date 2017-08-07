@@ -1,30 +1,37 @@
-
 var totalPlaces = [];
-var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA'
+var rowInfo =[];
+var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA';
 
 Tabletop.init( {key: sheetURL, callback: convertToGeoJSON, simpleSheet: true } );
 
 function convertToGeoJSON(data) {
+  console.log(data);
     for (var i = 0; i < data.length; i++){
-        console.log("test");
-        var rowInfo = [];
+        rowInfo = [];
         rowInfo.push(data[i]["state"]);
         rowInfo.push(data[i]["city"]);
         rowInfo.push(data[i]["homepage"]);
         rowInfo.push(data[i]["donation"]);
         rowInfo.push(data[i]["organization"]);
         rowInfo.push(data[i]["description"]);
+        rowInfo.push(data[i]["lat"]);
+        rowInfo.push(data[i]["lng"]);
+        rowInfo.push(data[i]["address"]);
+        rowInfo.push(data[i]["loctype"]);
+
         totalPlaces.push(rowInfo);
-        
     }
-    console.log(totalPlaces);
+    test();
+};
+
+function test(){
+  initMap();
 }
 
 
-// // console.log(totalPlaces);
-L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
-  var map = L.mapbox.map('map', 'mapbox.streets')
-    .setView([37.8, -96], 4);
+function initMap(){
+  L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
+  var map = L.mapbox.map('map', 'mapbox.streets').setView([37.8, -96], 4);
 
   var popup = new L.Popup({ autoPan: false });
 
@@ -33,6 +40,59 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
       style: getStyle,
       onEachFeature: onEachFeature
   }).addTo(map);
+
+
+
+// var geojson = [
+//   {
+//     type: 'Feature',
+//     geometry: {
+//       type: 'Point',
+//       coordinates: [-122, 33]
+//     }
+//   },
+//   {
+//     type: 'Feature',
+//     geometry: {
+//       type: 'Point',
+//       coordinates: [-122.413682, 37.775408]
+//     }
+//   }
+// ];
+
+// var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
+// mapGeo.scrollWheelZoom.disable();
+
+
+for (var index = 0; index < totalPlaces.length; index++){
+  console.log(totalPlaces);
+  var type = totalPlaces[index][8];
+  console.log(type);
+  if (type == "EE"){
+    type = "monument";
+  } 
+  if (type == "HEALTH"){
+    type = "rocket";
+  }
+  var geojson = [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
+      },
+     properties: {
+      title: totalPlaces[index][4],
+      description: totalPlaces[index][5],
+      "marker-symbol": type    
+    }
+    },
+  ];
+  var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
+  //mapGeo.scrollWheelZoom.disable();
+} 
+
+
 
   function getStyle(feature) {
       return {
@@ -73,23 +133,22 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
     for(var i = 0; i < totalPlaces.length; i++)
     {
         var statename = layer.feature.properties.name;
+        var stateaddress = layer.feature.properties.address;
         if(statename == totalPlaces[i][0])
         {
-           // console.log("there are places here with programs!");
+           console.log("there are places here with programs!");
            var density = layer.feature.properties.density;
            layer.feature.properties = 
            {
-                "name" : statename,
-                "density" : density,
-                "description" : totalPlaces[i][5]
+               "name" : statename,
+               "density" : density,
            };
 
         }
     }
       
       popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>' +
-          layer.feature.properties.description);
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>');
 
       if (!popup._map) popup.openOn(map);
       window.clearTimeout(closeTooltip);
@@ -116,9 +175,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
   function zoomToFeature(e) {
       map.fitBounds(e.target.getBounds());
   }
-
-  //map.legendControl.addLegend(getLegendHTML());
-
+// add markers to map
 
 
 
@@ -134,6 +191,9 @@ L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyN
 
 
 
+
+}
+// // console.log(totalPlaces);
 
 
 

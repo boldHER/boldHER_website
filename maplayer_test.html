@@ -69,21 +69,135 @@ var map = new mapboxgl.Map({
     center: [-71.97722138410576, -13.517379300798098]
 });
 
+var geojson = {
+  type: 'FeatureCollection',
+  features: [{
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-86.80249, 33.5206608]
+    },
+    properties: {
+      title: 'Pathways (Birmingham, Alabama)',
+      description: 'Provides housing and supportive services for 1,200-1,500 women and children annually.'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-149.9002778, 61.2180556]
+    },
+    properties: {
+      title: "Alaska Native Science & Engineering Program (Anchorage, Alaska)",
+      description: '"ANSEP’s objective is to effect systemic change in the hiring patterns of Alaska Natives in science and engineering by placing our students on a career path to leadership. "'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-112.0740373, 33.4483771]
+    },
+    properties: {
+      title: 'Fresh Start Women (Pheonix, Arizona)',
+      description: '“...provides women with education, resources and support to positively transform their lives.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-112.1740373, 33.4483771]
+    },
+    properties: {
+      title: 'Arizona Women’s Education and Employment, Inc. (Pheonix, Arizona)',
+      description: '“...providing specialized programs that give resources...from skills trainings to career mentoring...”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-92.2895948, 34.7464809]
+    },
+    properties: {
+      title: 'Women Lead Arkansas (Little Rock, Arkansas)',
+      description: '“...empower[s] women and girls to engage in politics, policy and leadership..[by]... providing tools and resources for women will increase opportunities for economic development...”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-118.2436849, 34.0522342]
+    },
+    properties: {
+      title: 'EmpowHer Institute (Los Angeles, California)',
+      description: '“...empower[s] young women by providing them the skills necessary through education...enabl[ing] them to become confident, college and career ready.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (Denver, Colorado)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-122.43988037109373,
+          37.77722770873696]
+    },
+    properties: {
+      title: 'Alliance for Girls (San Francisco, California)',
+      description: '“...developing leadership in the service sector in the San Francisco Bay Area.”'
+    }
+  }]
+};
+
 map.on('load', function () {
     map.addSource('museums', {
-        type: 'vector',
-        url: 'mapbox://mapbox.2opop9hr'
+        type: 'geojson',
+        data: geojson
     });
     map.addLayer({
         'id': 'museums',
-        'type': 'circle',
+        'type': 'marker',
         'source': 'museums',
         'layout': {
             'visibility': 'visible'
-        },
-        'paint': {
-            'circle-radius': 8,
-            'circle-color': 'rgba(55,148,179,1)'
         },
         'source-layer': 'museum-cusco'
     });

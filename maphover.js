@@ -1,12 +1,13 @@
 var totalPlaces = [];
 var rowInfo =[];
-var sheetURL = '12HhZTtSDJraLlG8hIfrJkEs8a-x36BgF1D0uL_3LUzI'
+var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA';
+var eduList = [];
+var healthList = [];
 
 Tabletop.init( {key: sheetURL, callback: convertToGeoJSON, simpleSheet: true } );
 
 function convertToGeoJSON(data) {
     for (var i = 0; i < data.length; i++){
-        console.log("test");
         rowInfo = [];
         rowInfo.push(data[i]["state"]);
         rowInfo.push(data[i]["city"]);
@@ -16,6 +17,9 @@ function convertToGeoJSON(data) {
         rowInfo.push(data[i]["description"]);
         rowInfo.push(data[i]["lat"]);
         rowInfo.push(data[i]["lng"]);
+        rowInfo.push(data[i]["type"]);
+        rowInfo.push(data[i]["address"]);
+
         totalPlaces.push(rowInfo);
     }
     test();
@@ -39,42 +43,64 @@ function initMap(){
   }).addTo(map);
 
 
-
-// var geojson = [
-//   {
-//     type: 'Feature',
-//     geometry: {
-//       type: 'Point',
-//       coordinates: [-122, 33]
-//     }
-//   },
-//   {
-//     type: 'Feature',
-//     geometry: {
-//       type: 'Point',
-//       coordinates: [-122.413682, 37.775408]
-//     }
-//   }
-// ];
-
-// var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
-// mapGeo.scrollWheelZoom.disable();
-
-
-for (var index = 0; index < totalPlaces.length; index++){
-  var geojson = [
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
+  for (var index = 0; index < totalPlaces.length; index++){
+    var tempjson = [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
+        },
+       properties: {
+        title: totalPlaces[index][4],
+        description: totalPlaces[index][5],
+        locType: totalPlaces[index][8]
       }
-    },
-  ];
-  var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
-  mapGeo.scrollWheelZoom.disable();
-} 
+      },
+    ];
+    if(totalPlaces[index][8] == "EE")
+    {
+      console.log("test");
+      eduList.push(tempjson);
+    }
+    else if(totalPlaces[index][8] == "Health")
+    {
+      console.log("test2");
+      healthList.push(tempjson);
+    }
+  } 
+  console.log("i guess it works up to here???"); //yes it works
 
+   var edujson = {
+    "type": "FeatureCollection",
+    "features": eduList
+   };
+
+   var healthjson = {
+    "type": "FeatureCollection",
+    "features": healthList
+   };
+
+    map.addLayer({ //it doesnt understand this!!!!!!
+            "id": "edulayer",
+            "type": "Point",
+            "source": {
+                "type": "geojson",
+                "data": edujson
+            },
+        });
+
+    map.addLayer({
+            "id": "healthlayer",
+            "type": "Point",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": healthjson
+                }
+            },
+        });
 
 
   function getStyle(feature) {
@@ -116,23 +142,22 @@ for (var index = 0; index < totalPlaces.length; index++){
     for(var i = 0; i < totalPlaces.length; i++)
     {
         var statename = layer.feature.properties.name;
+        var stateaddress = layer.feature.properties.address;
         if(statename == totalPlaces[i][0])
         {
-           // console.log("there are places here with programs!");
+           console.log("there are places here with programs!");
            var density = layer.feature.properties.density;
            layer.feature.properties = 
            {
-                "name" : statename,
-                "density" : density,
-                "description" : totalPlaces[i][5]
+               "name" : statename,
+               "density" : density,
            };
 
         }
     }
       
       popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>' +
-          layer.feature.properties.description);
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>');
 
       if (!popup._map) popup.openOn(map);
       window.clearTimeout(closeTooltip);
