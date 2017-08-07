@@ -72,7 +72,7 @@ for (var index = 0; index < totalPlaces.length; index++){
     },
   ];
   var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson).addTo(map);
-  mapGeo.scrollWheelZoom.disable();
+  //mapGeo.scrollWheelZoom.disable();
 } 
 
 
