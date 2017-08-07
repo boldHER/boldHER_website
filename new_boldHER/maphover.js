@@ -68,7 +68,7 @@ function initMap(){
       console.log("test2");
       healthList.push(tempjson);
     }
-  } 
+  }
   console.log("i guess it works up to here???"); //yes it works
 
    var edujson = {
@@ -136,7 +136,7 @@ function initMap(){
   var closeTooltip;
 
   function mousemove(e) {
-    
+
     var layer = e.target;
 
     for(var i = 0; i < totalPlaces.length; i++)
@@ -147,7 +147,7 @@ function initMap(){
         {
            console.log("there are places here with programs!");
            var density = layer.feature.properties.density;
-           layer.feature.properties = 
+           layer.feature.properties =
            {
                "name" : statename,
                "density" : density,
@@ -155,7 +155,7 @@ function initMap(){
 
         }
     }
-      
+
       popup.setLatLng(e.latlng);
       popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>');
 

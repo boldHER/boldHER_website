@@ -26,6 +26,9 @@
 	}
 
 		ul.actions li {
+			position:relative;
+			down: -38px;
+			right:8px;
 			padding: 1em 0 0 0;
 			display: block;
 			text-align: center;
