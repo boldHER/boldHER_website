@@ -43,10 +43,10 @@ for (var index = 0; index < totalPlaces.length; index++){
   var type = totalPlaces[index][9];
   console.log(type);
   if (type == "EE"){
-    type = "college";
-  } 
+    type = "monument";
+  }
   else if (type == "Health"){
-    type = "heart";
+    type = "rocket";
     console.log("Is this health?")
   }
 
@@ -59,8 +59,8 @@ for (var index = 0; index < totalPlaces.length; index++){
       },
      properties: {
       title: totalPlaces[index][4] + " |  " + totalPlaces[index][9], 
-       "description": totalPlaces[index][5] + "<p><a href= " + totalPlaces[index][3] + "\"title=\"Opens in a new window\">Donate<br></a>" + "<a href= " + totalPlaces[index][2] + "\"title=\"Opens in a new window\">See Website</a></p>",
-      'marker-symbol': type,   
+       "description": totalPlaces[index][5] + <h3><a href= " + totalPlaces[index][3] + target="_blank"\"title=\"Opens in a new window\">Donate</a></p>,"
+      'marker-symbol': type,
       'url': totalPlaces[index][3]
     }
     },
@@ -74,7 +74,7 @@ for (var index = 0; index < totalPlaces.length; index++){
   };
   myLayer.addTo(map);
   //mapGeo.scrollWheelZoom.disable();
-} 
+}
 
   var popup = new L.Popup({ autoPan: false});
 
@@ -111,7 +111,7 @@ for (var index = 0; index < totalPlaces.length; index++){
   var closeTooltip;
 
   function mousemove(e) {
-    
+
     var layer = e.target;
 
     for(var i = 0; i < totalPlaces.length; i++)
@@ -122,7 +122,7 @@ for (var index = 0; index < totalPlaces.length; index++){
         {
         //   console.log("there are places here with programs!");
            var density = layer.feature.properties.density;
-           layer.feature.properties = 
+           layer.feature.properties =
            {
                "name" : statename,
                "density" : density,
@@ -130,7 +130,7 @@ for (var index = 0; index < totalPlaces.length; index++){
 
         }
     }
-      
+
       popup.setLatLng(e.latlng);
       popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>');
 
