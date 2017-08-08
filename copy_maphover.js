@@ -43,10 +43,10 @@ for (var index = 0; index < totalPlaces.length; index++){
   var type = totalPlaces[index][9];
   console.log(type);
   if (type == "EE"){
-    type = "monument";
+    type = "college";
   }
   else if (type == "Health"){
-    type = "rocket";
+    type = "heart";
     console.log("Is this health?")
   }
 
@@ -58,8 +58,8 @@ for (var index = 0; index < totalPlaces.length; index++){
         coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
       },
      properties: {
-      title: totalPlaces[index][4] + " |  " + totalPlaces[index][9], 
-       "description": totalPlaces[index][5] + <h3><a href= " + totalPlaces[index][3] + target="_blank"\"title=\"Opens in a new window\">Donate</a></p>,"
+      title: totalPlaces[index][4] + " |  " + totalPlaces[index][9],
+       "description": totalPlaces[index][5] + "<p><a href= " + totalPlaces[index][3] + "\"title=\"Opens in a new window\">Donate<br></a>" + "<a href= " + totalPlaces[index][2] + "\"title=\"Opens in a new window\">See Website</a></p>",
       'marker-symbol': type,
       'url': totalPlaces[index][3]
     }
