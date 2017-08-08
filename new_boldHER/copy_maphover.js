@@ -1,82 +1,38 @@
+
 var totalPlaces = [];
-var rowInfo =[];
-var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA';
+var sheetURL = '1fwOXaHfSViMgZQ1QHREi_giBILnbOFC40zUoom4UwmA'
 
 Tabletop.init( {key: sheetURL, callback: convertToGeoJSON, simpleSheet: true } );
 
 function convertToGeoJSON(data) {
-  console.log(data);
     for (var i = 0; i < data.length; i++){
-        rowInfo = [];
+        console.log("test");
+        var rowInfo = [];
         rowInfo.push(data[i]["state"]);
         rowInfo.push(data[i]["city"]);
         rowInfo.push(data[i]["homepage"]);
         rowInfo.push(data[i]["donation"]);
         rowInfo.push(data[i]["organization"]);
         rowInfo.push(data[i]["description"]);
-        rowInfo.push(data[i]["lat"]);
-        rowInfo.push(data[i]["lng"]);
-        rowInfo.push(data[i]["address"]);
-        rowInfo.push(data[i]["loctype"]);
-
         totalPlaces.push(rowInfo);
+        
     }
-    test();
-};
-
-function test(){
-  initMap();
+    console.log(totalPlaces);
 }
 
 
-function initMap(){
-  L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
-  var map = L.mapbox.map('map', 'mapbox.streets').setView([37.8, -96], 4);
+// // console.log(totalPlaces);
+L.mapbox.accessToken = 'pk.eyJ1IjoiYWFraGFyZSIsImEiOiJjajV1MzY0NnYwMDVjMzJzM2cyNmpwNGp6In0.QtGI8sxFE3lG3k-Gg6oB4g';
+  var map = L.mapbox.map('map', 'mapbox.streets')
+    .setView([37.8, -96], 4);
+
+  var popup = new L.Popup({ autoPan: false });
 
   // statesData comes from the 'us-states.js' script included above
   var statesLayer = L.geoJson(statesData,  {
       style: getStyle,
       onEachFeature: onEachFeature
   }).addTo(map);
-
-for (var index = 0; index < totalPlaces.length; index++){
-  var type = totalPlaces[index][9];
-  console.log(type);
-  if (type == "EE"){
-    type = "monument";
-  } 
-  else if (type == "Health"){
-    type = "rocket";
-    console.log("Is this health?")
-  }
-
-  var geojson = [
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [totalPlaces[index][7], totalPlaces[index][6]]
-      },
-     properties: {
-      title: totalPlaces[index][4] + " |  " + totalPlaces[index][9], 
-       "description": totalPlaces[index][5] + "<p><a href= " + totalPlaces[index][3] + target="_blank"\"title=\"Opens in a new window\">Donate</a></p>",
-      'marker-symbol': type,   
-      'url': totalPlaces[index][3]
-    }
-    },
-  ];
-  var myLayer = L.mapbox.featureLayer().setGeoJSON(geojson);
-  myLayer.layout = {
-    "layout": {
-       "icon-image": type + "-15",
-      "icon-allow-overlap": true
-    }
-  };
-  myLayer.addTo(map);
-  //mapGeo.scrollWheelZoom.disable();
-} 
-
-  var popup = new L.Popup({ autoPan: false});
 
   function getStyle(feature) {
       return {
@@ -117,25 +73,26 @@ for (var index = 0; index < totalPlaces.length; index++){
     for(var i = 0; i < totalPlaces.length; i++)
     {
         var statename = layer.feature.properties.name;
-        var stateaddress = layer.feature.properties.address;
         if(statename == totalPlaces[i][0])
         {
-        //   console.log("there are places here with programs!");
+           // console.log("there are places here with programs!");
            var density = layer.feature.properties.density;
            layer.feature.properties = 
            {
-               "name" : statename,
-               "density" : density,
+                "name" : statename,
+                "density" : density,
+                "description" : totalPlaces[i][5]
            };
 
         }
     }
       
       popup.setLatLng(e.latlng);
-      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>');
+      popup.setContent('<div class="marker-title">' + layer.feature.properties.name + '</div>' +
+          layer.feature.properties.description);
 
-    //  if (!popup._map) popup.openOn(map);
-      //window.clearTimeout(closeTooltip);
+      if (!popup._map) popup.openOn(map);
+      window.clearTimeout(closeTooltip);
 
       // highlight feature
       layer.setStyle({
@@ -151,15 +108,16 @@ for (var index = 0; index < totalPlaces.length; index++){
 
   function mouseout(e) {
       statesLayer.resetStyle(e.target);
-     // closeTooltip = window.setTimeout(function() {
-       //   map.closePopup();
-      //}, 100);
+      closeTooltip = window.setTimeout(function() {
+          map.closePopup();
+      }, 100);
   }
 
   function zoomToFeature(e) {
       map.fitBounds(e.target.getBounds());
   }
-// add markers to map
+
+  //map.legendControl.addLegend(getLegendHTML());
 
 
 
@@ -175,9 +133,6 @@ for (var index = 0; index < totalPlaces.length; index++){
 
 
 
-
-}
-// // console.log(totalPlaces);
 
 
 
